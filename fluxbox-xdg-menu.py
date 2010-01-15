@@ -30,7 +30,7 @@ To update only the backgrounds: fluxbox-fdo-menugen.py --bg-path=~/some/path --b
 
 __author__ = "Rudolf Kastl , Antonio Gomes, Michael Rice"
 __version__ = "$Revision: 1.2 $"
-__date__ = "$Date: 2006/10/09 23:20:10 $"
+__date__ = "$Date: 2010/01/15 02:45:10 $"
 __license__ = "GPL"
 
 
@@ -236,8 +236,12 @@ def main(argv):
 		fsock = open(file,'w')
 		saveout = sys.stdout
 		sys.stdout = fsock
-
-	menu=xdg.Menu.parse()
+    #added for debian compatibility
+    if os.path.isfile('/etc/xdg/menus/debian-menu.menu'):
+	  debFile = "/etc/xdg/menus/debian-menu.menu"
+	  menu = xdg.Menu.parse(debFile)
+	else:
+	  menu=xdg.Menu.parse()
 # is done automatically now
 #	menu.setLocale(lang)
 
@@ -250,7 +254,8 @@ def main(argv):
 	if not do_submenu and use_bg and not bg_Xpath:
 	    print "[include] (~/.fluxbox/bgmenu)"
 		get_bgimgs_and_parse(None)
-    if not do_submenu:
+    
+	if not do_submenu:
         print footer()
 	if not use_stdout:
 		sys.stdout = saveout
