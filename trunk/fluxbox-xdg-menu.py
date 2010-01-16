@@ -30,7 +30,7 @@ To update only the backgrounds: fluxbox-fdo-menugen.py --bg-path=~/some/path --b
 
 __author__ = "Rudolf Kastl , Antonio Gomes, Michael Rice"
 __version__ = "$Revision: 1.2 $"
-__date__ = "$Date: 2010/01/15 02:45:10 $"
+__date__ = "$Date: 2010/01/16 10:45:10 $"
 __license__ = "GPL"
 
 
@@ -41,14 +41,20 @@ from os.path import isfile
 def usage():
 	print __doc__
 
-def header(wm="fluxbox"):
-	return """
-[begin] (Fluxbox)
-	[exec] (Web Browser) {htmlview}
-	[exec] (Email) {evolution}
-	[exec] (Terminal) {$TERM}
-	[exec] (Irc) {xchat}
-	[separator]\n"""
+def header(wm="fluxbox", deb="False"):
+    html = "htmlview"
+	term = "$TERM"
+    if deb:
+	    html = "x-www-browser"
+		term = "x-terminal-emulator"
+		
+	header = "[begin] (Fluxbox)\n"
+	header += "   [exec] (Web Browser) {" + html + "}\n"
+	header += "   [exec] (Email) {evolution}\n"
+	header += "   [exec] (Terminal) {" + term + "}\n"
+	header += "   [exec] (Irc) {xchat}\n"
+	header += "[separator]\n"
+	return header
 
 def footer(wm="fluxbox"):
 	return """
@@ -240,13 +246,15 @@ def main(argv):
     if os.path.isfile('/etc/xdg/menus/debian-menu.menu'):
 	  debFile = "/etc/xdg/menus/debian-menu.menu"
 	  menu = xdg.Menu.parse(debFile)
+	  is_deb = True
 	else:
 	  menu=xdg.Menu.parse()
+	  is_deb = False
 # is done automatically now
 #	menu.setLocale(lang)
 
 	if not do_submenu:
-        print header()
+        print header(deb=is_deb)
 	parseMenu(menu,wm,use_icons,theme)
 	if not do_submenu and use_bg and bg_Xpath:
 	    get_bgimgs_and_parse(xPath) 
