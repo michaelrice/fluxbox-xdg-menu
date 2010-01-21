@@ -29,8 +29,8 @@ To update only the backgrounds: fluxbox-fdo-menugen.py --bg-path=~/some/path --b
 """
 
 __author__ = "Rudolf Kastl , Antonio Gomes, Michael Rice"
-__version__ = "$Revision: 1.2 $"
-__date__ = "$Date: 2006/10/09 23:20:10 $"
+__version__ = "$Revision: 13 $"
+__date__ = "$Date: 2010/01/20 21:50:10 $"
 __license__ = "GPL"
 
 
@@ -98,7 +98,7 @@ def findIcon(icon, theme):
 		e.g. gaim --> /usr/share/pixmaps/gaim.png
 		e.g. fart.png --> /usr/share/pixmaps/fart.png
 	"""
-	retval=str(xdg.IconTheme.getIconPath(icon, 48, theme))
+	retval=str(xdg.IconTheme.getIconPath(icon, 48, theme,["png","xpm"]))
 	if retval == "None":
 		retval=""
 
